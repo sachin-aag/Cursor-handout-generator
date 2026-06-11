@@ -90,15 +90,6 @@ You can override the Cursor logo and upload a sponsor logo. Tagline presets are 
 
 Editable sections: header, tagline & credit, redemption steps, three info boxes, resource QR links, sponsor footer, and branding. Longer copy sections are collapsed by default to keep the workflow compact.
 
-## Design
-
-Visual language based on [cursorthailand.com](https://cursorthailand.com/):
-
-- Dark canvas `#14120B` with light text `#EDECEC`
-- Cursor Orange `#F54E00` accents
-- Inter + JetBrains Mono typography (CursorGothic/Berkeley Mono when bundled)
-- Subtle grid background, card surfaces, gradient dividers
-
 ## Deploy
 
 Deploy to [Vercel](https://vercel.com) or any static host:
