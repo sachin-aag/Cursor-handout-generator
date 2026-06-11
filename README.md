@@ -4,7 +4,6 @@ Generate **print-ready A4 handouts** for in-person Cursor events. Upload a list 
 
 Everything runs in your browser. Credit codes are never uploaded to a server.
 
-Design inspired by [Cursor Thailand](https://cursorthailand.com/).
 
 ## What it does
 
