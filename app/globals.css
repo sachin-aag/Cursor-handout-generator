@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cursor-bg: #14120b;
+  --color-cursor-bg-dark: #0f0d06;
+  --color-cursor-surface: #1c1a12;
+  --color-cursor-card: #1b1913;
+  --color-cursor-text: #edecec;
+  --color-cursor-text-muted: hsla(0, 3%, 93%, 0.55);
+  --color-cursor-text-faint: hsla(0, 3%, 93%, 0.35);
+  --color-cursor-border: hsla(0, 3%, 93%, 0.08);
+  --color-cursor-border-emphasis: hsla(0, 3%, 93%, 0.15);
+  --color-cursor-orange: #f54e00;
+  --color-cursor-orange-hover: #e04500;
+  --color-cursor-accent-blue: #a8b4c8;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-cursor-border;
+  }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
+  body {
+    @apply bg-cursor-bg text-cursor-text font-sans;
+    background-image:
+      linear-gradient(hsla(0, 3%, 93%, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(0, 3%, 93%, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  ::selection {
+    background: hsla(0, 3%, 93%, 0.18);
+    color: #edecec;
+  }
+}
+
+@layer utilities {
+  .cursor-grid-bg {
+    background-color: #14120b;
+    background-image:
+      linear-gradient(hsla(0, 3%, 93%, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(0, 3%, 93%, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}

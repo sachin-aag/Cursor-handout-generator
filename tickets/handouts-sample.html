@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cursor Event Credit Handouts</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @page { size: A4; margin: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #14120B;
+    color: #EDECEC;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .handout {
+    width: 210mm;
+    height: 297mm;
+    padding: 10mm;
+    page-break-after: always;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #14120B;
+  }
+  .handout:last-child { page-break-after: auto; }
+
+  .handout-inner {
+    width: 190mm;
+    height: 277mm;
+    border: 1px solid hsla(0, 3%, 93%, 0.15);
+    border-radius: 6px;
+    padding: 10mm 12mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: #14120B;
+  }
+
+  .handout-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(hsla(0, 3%, 93%, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, hsla(0, 3%, 93%, 0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    margin-bottom: 4mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cursor-logo { width: 52mm; height: auto; }
+
+  .community-name {
+    font-size: 14pt;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #EDECEC;
+  }
+
+  .handout-eyebrow {
+    font-size: 8pt;
+    font-weight: 500;
+    color: hsla(0, 3%, 93%, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 2mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .event-title {
+    font-size: 16pt;
+    font-weight: 700;
+    color: #EDECEC;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5mm;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .event-location {
+    font-size: 9pt;
+    font-weight: 400;
+    color: hsla(0, 3%, 93%, 0.35);
+    margin-bottom: 1.5mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .event-date {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 8.5pt;
+    font-weight: 400;
+    color: hsla(0, 3%, 93%, 0.55);
+    margin-bottom: 3mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .handout-tagline {
+    font-size: 9pt;
+    line-height: 1.5;
+    color: hsla(0, 3%, 93%, 0.55);
+    text-align: center;
+    max-width: 140mm;
+    margin-bottom: 5mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .value-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4mm;
+    background: #1C1A12;
+    border: 1px solid hsla(0, 3%, 93%, 0.15);
+    border-left: 2px solid #A8B4C8;
+    border-radius: 6px;
+    padding: 3mm 7mm;
+    margin-bottom: 6mm;
+    position: relative;
+    z-index: 1;
+  }
+  .value-badge .dollar {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 28pt;
+    font-weight: 700;
+    color: #F54E00;
+  }
+  .value-badge .label {
+    font-size: 11pt;
+    color: hsla(0, 3%, 93%, 0.75);
+    font-weight: 600;
+  }
+
+  .main-qr {
+    border-radius: 6px;
+    padding: 3mm;
+    margin-bottom: 3mm;
+    position: relative;
+    z-index: 1;
+    border: 1px solid hsla(0, 3%, 93%, 0.15);
+    background: #1C1A12;
+  }
+  .main-qr img { width: 48mm; height: 48mm; display: block; }
+
+  .credit-url {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 6.5pt;
+    color: hsla(0, 3%, 93%, 0.35);
+    margin-bottom: 5mm;
+    position: relative;
+    z-index: 1;
+    word-break: break-all;
+    text-align: center;
+    max-width: 140mm;
+  }
+
+  .redeem-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 6mm;
+    width: 166mm;
+    margin-bottom: 4mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .redeem-left { flex-shrink: 0; }
+  .redeem-right { flex: 1; }
+
+  .redeem-title {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #EDECEC;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2.5mm;
+  }
+
+  .redeem-steps {
+    padding-left: 5mm;
+    margin: 0;
+  }
+
+  .redeem-steps li {
+    font-size: 7.5pt;
+    line-height: 1.55;
+    color: hsla(0, 3%, 93%, 0.75);
+    margin-bottom: 1mm;
+  }
+
+  .redeem-steps li strong {
+    color: #EDECEC;
+    font-weight: 600;
+  }
+
+  .redeem-note {
+    font-size: 6.5pt;
+    color: hsla(0, 3%, 93%, 0.35);
+    margin-top: 2mm;
+    font-style: italic;
+  }
+
+  .info-boxes {
+    display: flex;
+    gap: 3mm;
+    width: 166mm;
+    margin-bottom: 5mm;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+
+  .info-box {
+    flex: 1;
+    background: #1B1913;
+    border: 1px solid hsla(0, 3%, 93%, 0.08);
+    border-radius: 6px;
+    padding: 3.5mm 4mm;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-box-title {
+    font-size: 8pt;
+    font-weight: 700;
+    color: #EDECEC;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 2.5mm;
+    padding-bottom: 2mm;
+    border-bottom: 1px solid hsla(0, 3%, 93%, 0.08);
+  }
+
+  .info-box ul { list-style: none; padding: 0; }
+
+  .info-box li {
+    font-size: 7pt;
+    line-height: 1.55;
+    color: hsla(0, 3%, 93%, 0.55);
+    padding-left: 3.5mm;
+    position: relative;
+    margin-bottom: 1.2mm;
+  }
+
+  .info-box li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #F54E00;
+  }
+
+  .info-box li strong {
+    color: hsla(0, 3%, 93%, 0.85);
+    font-weight: 600;
+  }
+
+  .resources {
+    display: flex;
+    gap: 12mm;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4mm;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+  }
+
+  .resource-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2mm;
+  }
+
+  .resource-item .qr-small {
+    border-radius: 6px;
+    padding: 2mm;
+    border: 1px solid hsla(0, 3%, 93%, 0.15);
+    background: #1C1A12;
+  }
+
+  .resource-item .qr-small img {
+    width: 20mm;
+    height: 20mm;
+    display: block;
+  }
+
+  .resource-item .resource-label {
+    font-size: 6.5pt;
+    color: #F54E00;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  .divider {
+    width: 100mm;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsla(0, 3%, 93%, 0.15), transparent);
+    margin-bottom: 3mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1mm;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-row {
+    display: flex;
+    align-items: center;
+    gap: 2.5mm;
+  }
+
+  .sponsor-logo {
+    width: 7mm;
+    height: 7mm;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .footer-text {
+    font-size: 8.5pt;
+    color: hsla(0, 3%, 93%, 0.55);
+  }
+
+  .footer-text span {
+    color: #EDECEC;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-url {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 6.5pt;
+    color: hsla(0, 3%, 93%, 0.35);
+  }
+
+  .handout-number {
+    position: absolute;
+    bottom: 4mm;
+    right: 6mm;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 6.5pt;
+    color: hsla(0, 3%, 93%, 0.2);
+  }
+</style>
+</head>
+<body>
+<div class="handout">
+  <div class="handout-inner">
+    <div class="logo-row">
+      <img class="cursor-logo" src="/cursor-logo.svg" alt="Cursor" />
+      
+    </div>
+
+    <div class="handout-eyebrow">Event Credit</div>
+    <div class="event-title">Cafe Cursor Bangkok</div>
+    <div class="event-location">Suan Luang, Bangkok</div>
+    <div class="event-date">Sunday, June 7, 2026 · 2:00 PM – 6:00 PM</div>
+    <div class="handout-tagline">Thanks for joining us — this credit is yours. Scan to redeem.</div>
+
+    <div class="value-badge">
+      <span class="dollar">$20</span>
+      <span class="label">Cursor<br>Credit</span>
+    </div>
+
+    <div class="redeem-section">
+      <div class="redeem-left">
+        <div class="main-qr">
+          <img src="data:image/png;base64,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" alt="Credit QR Code" />
+        </div>
+      </div>
+      <div class="redeem-right">
+        <div class="redeem-title">How to Redeem</div>
+        <ol class="redeem-steps">
+          <li>Create a free account at <strong>cursor.com</strong></li>
+          <li>Log in, then scan this QR code</li>
+          <li>Click <strong>"Redeem"</strong> on the page</li>
+          <li>Credits appear in <strong>Dashboard &gt; Credits</strong></li>
+          <li>Start a Pro plan with a payment method</li>
+          <li>Credits auto-apply to your next invoice</li>
+        </ol>
+        <div class="redeem-note">Individual accounts only (not Team plans). Hard refresh if credits don't appear.</div>
+      </div>
+    </div>
+    <div class="credit-url">https://cursor.com/referral?code=2FL7FBAUCFU7</div>
+
+    <div class="info-boxes">
+      <div class="info-box">
+        <div class="info-box-title">What is Cursor?</div>
+        <ul>
+          <li>AI-powered code editor built on VS Code</li>
+          <li>Understands your entire codebase</li>
+          <li><strong>Cmd+K</strong> to edit code with AI</li>
+          <li><strong>Cmd+L</strong> to chat about your code</li>
+          <li><strong>Tab</strong> to accept smart completions</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Get Started</div>
+        <ul>
+          <li>Download at <strong>cursor.com</strong></li>
+          <li>Import your VS Code settings in one click</li>
+          <li>All your extensions work out of the box</li>
+          <li>Use this <strong>$20 credit</strong> to go Pro</li>
+          <li>Learn tips at <strong>cursor.com/learn</strong></li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Pro Tips</div>
+        <ul>
+          <li>Select code + Cmd+K to refactor anything</li>
+          <li>@ mention files in chat for context</li>
+          <li>Use <strong>Skills</strong> to teach Cursor your stack</li>
+          <li>Multi-file edits across your whole project</li>
+          <li>Works with any language or framework</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="resources">
+      <div class="resource-item">
+        <div class="qr-small">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAklEQVR4AewaftIAAAWFSURBVO3BQW4d2Q5EwTTx9sEZ7/6XQ844l9agD/yedpaNMkqS3Sfix/vb24cA/KsQACsEwAoBsEIArBAAKwTACgGwXvqJU6m/Sc/qs51KXelZOadSV3pWd5xKXelZOadSf5OelRMCYIUAWCEAVgiAFQJghQBYL/2GntV3cyr1lFOpz9azunIq9d30rL6bU6k7QgCsEAArBMAKAbBCAKwQACsEwHrpQadST+hZPeFU6krPyjmVuutUyulZ3dWzck6lvsKp1BN6Vk8IAbBCAKwQACsEwAoBsEIArJfwy06lntCzck6lrvSs7uhZ4edCAKwQACsEwAoBsEIArBAAKwTAegm/rGflnEo5Pavv5lTqSs8KUgiAFQJghQBYIQBWCIAVAmC99KCe1d/kVMrpWX2FU6k/Sc/qTxICYIUAWCEAVgiAFQJghQBYL/2GU6n/kp6Vcyrl9KyunEo5Pasrp1JOz8o5lXrKqdTfIgTACgGwQgCsEAArBMAKAbBCAKyXfqJnhX+cSj2hZ/XZelZ39az+K0IArBAAKwTACgGwQgCsEADrx/vb24cunEo5Pasrp1LfTc/qrlOpJ/SsnFOpJ/Ss7jqV+m56Vk8IAbBCAKwQACsEwAoBsEIArBAA66XfcCr1lJ6Vcyrl9KzuOpW6q2f1FXpWd5xK3dWzunIq5fSsnnAqdaVndUcIgBUCYIUAWCEAVgiAFQJg/Xh/e/vQQ06lnJ7VlVMpp2flnEpd6VnddSrl9KzuOpVyelZXTqXu6FldOZX6bnpWzqnUXT0rJwTACgGwQgCsEAArBMAKAbB+vL+9fejCqZTTs/rTnEo5Pau7TqXu6ll9tlOpp/SsvptTKadn5YQAWCEAVgiAFQJghQBYIQBWCID10m84lbrSs7rrVMrpWTmnUld6VnedSt3Rs7rrVOqunpXTs7pyKvWEUymnZ3XlVOqzhQBYIQBWCIAVAmCFAFghANZLv6FndeVU6rP1rO46lbrSs3JOpe46lXJ6Vt9Nz+rKqZTTs3JOpa70rJxTqSs9qztCAKwQACsEwAoBsEIArBAAKwTA+vH+9vahC6dSTs/qrlOp76ZndeVUyulZfYVTqTt6VnedSn2FnpVzKnVXz8oJAbBCAKwQACsEwAoBsEIArJcedCrl9KzuOpVyelZXTqWecCrl9KyunEo5Pau7elZP6FldOZW6o2d1V8/qyqnUHSEAVgiAFQJghQBYIQBWCID10hc5lbrSs3J6Vs6p1JWelXMq9d2cSt11KvU3OZVyelZXelZ3hABYIQBWCIAVAmCFAFghAFYIgPXj/e3tQ/i/U6kn9Ky+m1OpKz2rJ5xK3dWz+mwhAFYIgBUCYIUAWCEAVgiA9dJPnEr9TXpWTs/qrlMp51Tqrp7Vd3MqdaVndUfP6sqp1BN6Vk4IgBUCYIUAWCEAVgiAFQJghQBYL/2GntV3cyp116nUV+hZ3XUq5fSsntCzesKp1JWe1V2nUneEAFghAFYIgBUCYIUAWCEA1ksPOpV6Qs/qK/Ss7jiVunIq9YRTqbtOpT5bz+rKqZTTs7rSs7ojBMAKAbBCAKwQACsEwAoBsF7CLzuVuqNndeVUyulZXTmVcnpWzqnUU3pWzqmUcyp116nUXT0rJwTACgGwQgCsEAArBMAKAbBCAKyX8Mt6Vp/tVOpKz+qz9azu6lk5p1J39ayunErdEQJghQBYIQBWCIAVAmCFAFgvPahn9SfpWV05lXpCz+oJp1J39aycU6mv0LP6bCEAVgiAFQJghQBYIQBWCIAVAmC99BtOpf4mp1JXelZ3nEpdOZV6Qs/qrlMpp2d15VTqCadSny0EwAoBsEIArBAAKwTACgGwfry/vX0IwL8KAbBCAKwQACsEwAoBsEIArP8BnNyVsRc5cDoAAAAASUVORK5CYII=" alt="Learn Cursor" />
+        </div>
+        <span class="resource-label">Learn Cursor</span>
+      </div>
+      <div class="resource-item">
+        <div class="qr-small">
+          <img src="data:image/png;base64,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" alt="About CREATORS" />
+        </div>
+        <span class="resource-label">About CREATORS</span>
+      </div></div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+      <div class="footer-row">
+        
+        <div class="footer-text">Presented by <span>CREATORS</span></div>
+      </div>
+      <div class="footer-url">creators-ecosystem.de</div>
+    </div>
+
+    <span class="handout-number">#001</span>
+  </div>
+</div>
+<div class="handout">
+  <div class="handout-inner">
+    <div class="logo-row">
+      <img class="cursor-logo" src="/cursor-logo.svg" alt="Cursor" />
+      
+    </div>
+
+    <div class="handout-eyebrow">Event Credit</div>
+    <div class="event-title">Cafe Cursor Bangkok</div>
+    <div class="event-location">Suan Luang, Bangkok</div>
+    <div class="event-date">Sunday, June 7, 2026 · 2:00 PM – 6:00 PM</div>
+    <div class="handout-tagline">Thanks for joining us — this credit is yours. Scan to redeem.</div>
+
+    <div class="value-badge">
+      <span class="dollar">$20</span>
+      <span class="label">Cursor<br>Credit</span>
+    </div>
+
+    <div class="redeem-section">
+      <div class="redeem-left">
+        <div class="main-qr">
+          <img src="data:image/png;base64,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" alt="Credit QR Code" />
+        </div>
+      </div>
+      <div class="redeem-right">
+        <div class="redeem-title">How to Redeem</div>
+        <ol class="redeem-steps">
+          <li>Create a free account at <strong>cursor.com</strong></li>
+          <li>Log in, then scan this QR code</li>
+          <li>Click <strong>"Redeem"</strong> on the page</li>
+          <li>Credits appear in <strong>Dashboard &gt; Credits</strong></li>
+          <li>Start a Pro plan with a payment method</li>
+          <li>Credits auto-apply to your next invoice</li>
+        </ol>
+        <div class="redeem-note">Individual accounts only (not Team plans). Hard refresh if credits don't appear.</div>
+      </div>
+    </div>
+    <div class="credit-url">https://cursor.com/referral?code=WYA0XSSTS664</div>
+
+    <div class="info-boxes">
+      <div class="info-box">
+        <div class="info-box-title">What is Cursor?</div>
+        <ul>
+          <li>AI-powered code editor built on VS Code</li>
+          <li>Understands your entire codebase</li>
+          <li><strong>Cmd+K</strong> to edit code with AI</li>
+          <li><strong>Cmd+L</strong> to chat about your code</li>
+          <li><strong>Tab</strong> to accept smart completions</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Get Started</div>
+        <ul>
+          <li>Download at <strong>cursor.com</strong></li>
+          <li>Import your VS Code settings in one click</li>
+          <li>All your extensions work out of the box</li>
+          <li>Use this <strong>$20 credit</strong> to go Pro</li>
+          <li>Learn tips at <strong>cursor.com/learn</strong></li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Pro Tips</div>
+        <ul>
+          <li>Select code + Cmd+K to refactor anything</li>
+          <li>@ mention files in chat for context</li>
+          <li>Use <strong>Skills</strong> to teach Cursor your stack</li>
+          <li>Multi-file edits across your whole project</li>
+          <li>Works with any language or framework</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="resources">
+      <div class="resource-item">
+        <div class="qr-small">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAklEQVR4AewaftIAAAWFSURBVO3BQW4d2Q5EwTTx9sEZ7/6XQ844l9agD/yedpaNMkqS3Sfix/vb24cA/KsQACsEwAoBsEIArBAAKwTACgGwXvqJU6m/Sc/qs51KXelZOadSV3pWd5xKXelZOadSf5OelRMCYIUAWCEAVgiAFQJghQBYL/2GntV3cyr1lFOpz9azunIq9d30rL6bU6k7QgCsEAArBMAKAbBCAKwQACsEwHrpQadST+hZPeFU6krPyjmVuutUyulZ3dWzck6lvsKp1BN6Vk8IAbBCAKwQACsEwAoBsEIArJfwy06lntCzck6lrvSs7uhZ4edCAKwQACsEwAoBsEIArBAAKwTAegm/rGflnEo5Pavv5lTqSs8KUgiAFQJghQBYIQBWCIAVAmC99KCe1d/kVMrpWX2FU6k/Sc/qTxICYIUAWCEAVgiAFQJghQBYL/2GU6n/kp6Vcyrl9KyunEo5Pasrp1JOz8o5lXrKqdTfIgTACgGwQgCsEAArBMAKAbBCAKyXfqJnhX+cSj2hZ/XZelZ39az+K0IArBAAKwTACgGwQgCsEADrx/vb24cunEo5Pasrp1LfTc/qrlOpJ/SsnFOpJ/Ss7jqV+m56Vk8IAbBCAKwQACsEwAoBsEIArBAA66XfcCr1lJ6Vcyrl9KzuOpW6q2f1FXpWd5xK3dWzunIq5fSsnnAqdaVndUcIgBUCYIUAWCEAVgiAFQJg/Xh/e/vQQ06lnJ7VlVMpp2flnEpd6VnddSrl9KzuOpVyelZXTqXu6FldOZX6bnpWzqnUXT0rJwTACgGwQgCsEAArBMAKAbB+vL+9fejCqZTTs/rTnEo5Pau7TqXu6ll9tlOpp/SsvptTKadn5YQAWCEAVgiAFQJghQBYIQBWCID10m84lbrSs7rrVMrpWTmnUld6VnedSt3Rs7rrVOqunpXTs7pyKvWEUymnZ3XlVOqzhQBYIQBWCIAVAmCFAFghANZLv6FndeVU6rP1rO46lbrSs3JOpe46lXJ6Vt9Nz+rKqZTTs3JOpa70rJxTqSs9qztCAKwQACsEwAoBsEIArBAAKwTA+vH+9vahC6dSTs/qrlOp76ZndeVUyulZfYVTqTt6VnedSn2FnpVzKnVXz8oJAbBCAKwQACsEwAoBsEIArJcedCrl9KzuOpVyelZXTqWecCrl9KyunEo5Pau7elZP6FldOZW6o2d1V8/qyqnUHSEAVgiAFQJghQBYIQBWCID10hc5lbrSs3J6Vs6p1JWelXMq9d2cSt11KvU3OZVyelZXelZ3hABYIQBWCIAVAmCFAFghAFYIgPXj/e3tQ/i/U6kn9Ky+m1OpKz2rJ5xK3dWz+mwhAFYIgBUCYIUAWCEAVgiA9dJPnEr9TXpWTs/qrlMp51Tqrp7Vd3MqdaVndUfP6sqp1BN6Vk4IgBUCYIUAWCEAVgiAFQJghQBYL/2GntV3cyp116nUV+hZ3XUq5fSsntCzesKp1JWe1V2nUneEAFghAFYIgBUCYIUAWCEA1ksPOpV6Qs/qK/Ss7jiVunIq9YRTqbtOpT5bz+rKqZTTs7rSs7ojBMAKAbBCAKwQACsEwAoBsF7CLzuVuqNndeVUyulZXTmVcnpWzqnUU3pWzqmUcyp116nUXT0rJwTACgGwQgCsEAArBMAKAbBCAKyX8Mt6Vp/tVOpKz+qz9azu6lk5p1J39ayunErdEQJghQBYIQBWCIAVAmCFAFgvPahn9SfpWV05lXpCz+oJp1J39aycU6mv0LP6bCEAVgiAFQJghQBYIQBWCIAVAmC99BtOpf4mp1JXelZ3nEpdOZV6Qs/qrlMpp2d15VTqCadSny0EwAoBsEIArBAAKwTACgGwfry/vX0IwL8KAbBCAKwQACsEwAoBsEIArP8BnNyVsRc5cDoAAAAASUVORK5CYII=" alt="Learn Cursor" />
+        </div>
+        <span class="resource-label">Learn Cursor</span>
+      </div>
+      <div class="resource-item">
+        <div class="qr-small">
+          <img src="data:image/png;base64,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" alt="About CREATORS" />
+        </div>
+        <span class="resource-label">About CREATORS</span>
+      </div></div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+      <div class="footer-row">
+        
+        <div class="footer-text">Presented by <span>CREATORS</span></div>
+      </div>
+      <div class="footer-url">creators-ecosystem.de</div>
+    </div>
+
+    <span class="handout-number">#002</span>
+  </div>
+</div>
+<div class="handout">
+  <div class="handout-inner">
+    <div class="logo-row">
+      <img class="cursor-logo" src="/cursor-logo.svg" alt="Cursor" />
+      
+    </div>
+
+    <div class="handout-eyebrow">Event Credit</div>
+    <div class="event-title">Cafe Cursor Bangkok</div>
+    <div class="event-location">Suan Luang, Bangkok</div>
+    <div class="event-date">Sunday, June 7, 2026 · 2:00 PM – 6:00 PM</div>
+    <div class="handout-tagline">Thanks for joining us — this credit is yours. Scan to redeem.</div>
+
+    <div class="value-badge">
+      <span class="dollar">$20</span>
+      <span class="label">Cursor<br>Credit</span>
+    </div>
+
+    <div class="redeem-section">
+      <div class="redeem-left">
+        <div class="main-qr">
+          <img src="data:image/png;base64,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miP/BfvcPLXmyFv2uXnLPjc/TQUAGioA0FABgIYKADRUAKChAgANFQBoqABAQwUAGioA0PDX379//5MvsebIU/vcvGXNkaf2ufmJ1hz5BvvcfGLNkbfsc/PUmiN/un1uvsWaI99gn5tvsObIJ/a5eUMFABoqANBQAYCGCgA0VACgoQIADRUAaKgAQEMFABoqANDw19+/f/+TD6w58pZ9br7BmiPfYJ+bb7HmyFP73HyDNUc+sc/NW9YceWqfm6fWHPnEPjc/0Zojb9nn5qk1R96yz81b1hx5ap+bpyoA0FABgIYKADRUAKChAgANFQBoqABAQwUAGioA0FABgIYKADT89ffv3//kA2uOPLXPzSfWHHlqn5tPrDny1D43b1lz5C373Dy15sgn9rl5as2Rp/a5+cSaI0/tc/OJNUee2ufmLWuOPLXPzVvWHPnEPjffYM2RT+xz84Y1R77FPjdvqABAQwUAGioA0FABgIYKADRUAKChAgANFQBoqABAQwUAGn7lQ/vcfIM1Rz6xz80b1hz5FmuOwP+VNUee2ufmLfvcfGLNkaf2uXnLPjdPrTnyDSoA0FABgIYKADRUAKChAgANFQBoqABAQwUAGioA0FABgIYKADT89ffv3//kP2DNkaf2uXnLmiNv2efmp1lz5C373LxlzZFP7HPz1Joj32Cfm2+x5shb9rn5BmuOvGWfmzdUAKChAgANFQBoqABAQwUAGioA0FABgIYKADRUAKChAgANv/KhNUfess/NU2uOfIM1R36iNUc+sc/NU2uOfIM1Rz6xz8032OfmqTVH3rLmyH/BmiN/ujVHntrn5qkKADRUAKChAgANFQBoqABAQwUAGioA0FABgIYKADRUAKChAgANf/39+/c/4SutOfKWfW6+wZoj/wX73LxhzZG37HPziTVH3rLPzTdYc+SpfW4+sebIW/a5eUMFABoqANBQAYCGCgA0VACgoQIADRUAaKgAQEMFABoqANDwKx9ac4S+fW7+dGuO/ET73LxlzZGn9rl5yz43b9nn5qk1R96y5sgn9rl5w5ojn9jn5qk1R75BBQAaKgDQUAGAhgoANFQAoKECAA0VAGioAEBDBQAaKgDQUAGAhl950T43f7o1R96yz81b1hx5yz4332DNkU+sOfLUPjef2Ofmp1lz5BP73HyDfW6+wT43b9nn5htUAKChAgANFQBoqABAQwUAGioA0FABgIYKADRUAKChAgANv/JF1hz5BvvcfIM1Rz6xz81Ps+bIW/a5+cSaIz/NPjf/BWuO/DRrjnxin5u3rDny1D43T1UAoKECAA0VAGioAEBDBQAaKgDQUAGAhgoANFQAoKECAA2/wtfa5+YTa458gzVHntrn5lvsc/OWNUd+mn1uPrHmyFv2uXlqzZE/3Zojn9jn5g0VAGioAEBDBQAaKgDQUAGAhgoANFQAoKECAA0VAGioAEBDBQAafoX/pH1uvsGaI5/Y5+apNUc+sc/NW/a5ecOaI5/Y5+Yt+9y8Zc2RP92aI0/tc/MNKgDQUAGAhgoANFQAoKECAA0VAGioAEBDBQAaKgDQUAGAhl/5Ivvc8N+yz823WHPkLfvcvGGfm0+sOfLUPjefWHPkqX1uvsU+N/RUAKChAgANFQBoqABAQwUAGioA0FABgIYKADRUAKChAgANFQBo+JUXrTlC35ojb1lz5E+3z81b1hx5y5oj32DNkW+xz81Ps+bIJ/a5ecuaI0/tc/NUBQAaKgDQUAGAhgoANFQAoKECAA0VAGioAEBDBQAaKgDQ8Nffv3//EwD4UAUAGioA0FABgIYKADRUAKChAgANFQBoqABAQwUAGioA0PA/1eHk3DrCZGgAAAAASUVORK5CYII=" alt="Credit QR Code" />
+        </div>
+      </div>
+      <div class="redeem-right">
+        <div class="redeem-title">How to Redeem</div>
+        <ol class="redeem-steps">
+          <li>Create a free account at <strong>cursor.com</strong></li>
+          <li>Log in, then scan this QR code</li>
+          <li>Click <strong>"Redeem"</strong> on the page</li>
+          <li>Credits appear in <strong>Dashboard &gt; Credits</strong></li>
+          <li>Start a Pro plan with a payment method</li>
+          <li>Credits auto-apply to your next invoice</li>
+        </ol>
+        <div class="redeem-note">Individual accounts only (not Team plans). Hard refresh if credits don't appear.</div>
+      </div>
+    </div>
+    <div class="credit-url">https://cursor.com/referral?code=RVMJATMOBDTH</div>
+
+    <div class="info-boxes">
+      <div class="info-box">
+        <div class="info-box-title">What is Cursor?</div>
+        <ul>
+          <li>AI-powered code editor built on VS Code</li>
+          <li>Understands your entire codebase</li>
+          <li><strong>Cmd+K</strong> to edit code with AI</li>
+          <li><strong>Cmd+L</strong> to chat about your code</li>
+          <li><strong>Tab</strong> to accept smart completions</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Get Started</div>
+        <ul>
+          <li>Download at <strong>cursor.com</strong></li>
+          <li>Import your VS Code settings in one click</li>
+          <li>All your extensions work out of the box</li>
+          <li>Use this <strong>$20 credit</strong> to go Pro</li>
+          <li>Learn tips at <strong>cursor.com/learn</strong></li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Pro Tips</div>
+        <ul>
+          <li>Select code + Cmd+K to refactor anything</li>
+          <li>@ mention files in chat for context</li>
+          <li>Use <strong>Skills</strong> to teach Cursor your stack</li>
+          <li>Multi-file edits across your whole project</li>
+          <li>Works with any language or framework</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="resources">
+      <div class="resource-item">
+        <div class="qr-small">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAAAklEQVR4AewaftIAAAWFSURBVO3BQW4d2Q5EwTTx9sEZ7/6XQ844l9agD/yedpaNMkqS3Sfix/vb24cA/KsQACsEwAoBsEIArBAAKwTACgGwXvqJU6m/Sc/qs51KXelZOadSV3pWd5xKXelZOadSf5OelRMCYIUAWCEAVgiAFQJghQBYL/2GntV3cyr1lFOpz9azunIq9d30rL6bU6k7QgCsEAArBMAKAbBCAKwQACsEwHrpQadST+hZPeFU6krPyjmVuutUyulZ3dWzck6lvsKp1BN6Vk8IAbBCAKwQACsEwAoBsEIArJfwy06lntCzck6lrvSs7uhZ4edCAKwQACsEwAoBsEIArBAAKwTAegm/rGflnEo5Pavv5lTqSs8KUgiAFQJghQBYIQBWCIAVAmC99KCe1d/kVMrpWX2FU6k/Sc/qTxICYIUAWCEAVgiAFQJghQBYL/2GU6n/kp6Vcyrl9KyunEo5Pasrp1JOz8o5lXrKqdTfIgTACgGwQgCsEAArBMAKAbBCAKyXfqJnhX+cSj2hZ/XZelZ39az+K0IArBAAKwTACgGwQgCsEADrx/vb24cunEo5Pasrp1LfTc/qrlOpJ/SsnFOpJ/Ss7jqV+m56Vk8IAbBCAKwQACsEwAoBsEIArBAA66XfcCr1lJ6Vcyrl9KzuOpW6q2f1FXpWd5xK3dWzunIq5fSsnnAqdaVndUcIgBUCYIUAWCEAVgiAFQJg/Xh/e/vQQ06lnJ7VlVMpp2flnEpd6VnddSrl9KzuOpVyelZXTqXu6FldOZX6bnpWzqnUXT0rJwTACgGwQgCsEAArBMAKAbB+vL+9fejCqZTTs/rTnEo5Pau7TqXu6ll9tlOpp/SsvptTKadn5YQAWCEAVgiAFQJghQBYIQBWCID10m84lbrSs7rrVMrpWTmnUld6VnedSt3Rs7rrVOqunpXTs7pyKvWEUymnZ3XlVOqzhQBYIQBWCIAVAmCFAFghANZLv6FndeVU6rP1rO46lbrSs3JOpe46lXJ6Vt9Nz+rKqZTTs3JOpa70rJxTqSs9qztCAKwQACsEwAoBsEIArBAAKwTA+vH+9vahC6dSTs/qrlOp76ZndeVUyulZfYVTqTt6VnedSn2FnpVzKnVXz8oJAbBCAKwQACsEwAoBsEIArJcedCrl9KzuOpVyelZXTqWecCrl9KyunEo5Pau7elZP6FldOZW6o2d1V8/qyqnUHSEAVgiAFQJghQBYIQBWCID10hc5lbrSs3J6Vs6p1JWelXMq9d2cSt11KvU3OZVyelZXelZ3hABYIQBWCIAVAmCFAFghAFYIgPXj/e3tQ/i/U6kn9Ky+m1OpKz2rJ5xK3dWz+mwhAFYIgBUCYIUAWCEAVgiA9dJPnEr9TXpWTs/qrlMp51Tqrp7Vd3MqdaVndUfP6sqp1BN6Vk4IgBUCYIUAWCEAVgiAFQJghQBYL/2GntV3cyp116nUV+hZ3XUq5fSsntCzesKp1JWe1V2nUneEAFghAFYIgBUCYIUAWCEA1ksPOpV6Qs/qK/Ss7jiVunIq9YRTqbtOpT5bz+rKqZTTs7rSs7ojBMAKAbBCAKwQACsEwAoBsF7CLzuVuqNndeVUyulZXTmVcnpWzqnUU3pWzqmUcyp116nUXT0rJwTACgGwQgCsEAArBMAKAbBCAKyX8Mt6Vp/tVOpKz+qz9azu6lk5p1J39ayunErdEQJghQBYIQBWCIAVAmCFAFgvPahn9SfpWV05lXpCz+oJp1J39aycU6mv0LP6bCEAVgiAFQJghQBYIQBWCIAVAmC99BtOpf4mp1JXelZ3nEpdOZV6Qs/qrlMpp2d15VTqCadSny0EwAoBsEIArBAAKwTACgGwfry/vX0IwL8KAbBCAKwQACsEwAoBsEIArP8BnNyVsRc5cDoAAAAASUVORK5CYII=" alt="Learn Cursor" />
+        </div>
+        <span class="resource-label">Learn Cursor</span>
+      </div>
+      <div class="resource-item">
+        <div class="qr-small">
+          <img src="data:image/png;base64,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" alt="About CREATORS" />
+        </div>
+        <span class="resource-label">About CREATORS</span>
+      </div></div>
+
+    <div class="divider"></div>
+
+    <div class="footer">
+      <div class="footer-row">
+        
+        <div class="footer-text">Presented by <span>CREATORS</span></div>
+      </div>
+      <div class="footer-url">creators-ecosystem.de</div>
+    </div>
+
+    <span class="handout-number">#003</span>
+  </div>
+</div>
+</body>
+</html>
